@@ -14,8 +14,8 @@ import React from "react";
 const { Title } = Typography;
 
 export default function BlogPostShow() {
-  const { queryResult } = useShow({});
-  const { data, isLoading } = queryResult;
+  const { query } = useShow({});
+  const { data, isLoading } = query;
 
   const record = data?.data;
 
