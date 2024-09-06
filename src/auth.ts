@@ -18,11 +18,7 @@ declare module "next-auth/jwt" {
     refreshToken: string;
   }
 }
-console.log("AUTH_AZURE_AD_CLIENT_ID", process.env.AUTH_AZURE_AD_CLIENT_ID);
-console.log("AUTH_AZURE_AD_CLIENT_SECRET", process.env.AUTH_AZURE_AD_CLIENT_SECRET);
-console.log("AUTH_AZURE_AD_TENANT_ID", process.env.AUTH_AZURE_AD_TENANT_ID);
-console.log("AUTH_AZURE_AD_CUSTOM_SCOPE", process.env.AUTH_AZURE_AD_CUSTOM_SCOPE);
-console.log(process.env);
+
 const {
   AUTH_AZURE_AD_CLIENT_ID,
   AUTH_AZURE_AD_CLIENT_SECRET,
@@ -76,8 +72,7 @@ export const authOptions = {
       return session;
     },
   },
-  // debug: process.env.NODE_ENV !== "production" ? true : false,
-  debug: true,
+  debug: process.env.NODE_ENV !== "production" ? true : false,
 } satisfies NextAuthOptions;
 
 async function refreshAccessToken(token: JWT): Promise<JWT> {
