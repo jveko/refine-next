@@ -1,6 +1,8 @@
 "use client";
 
+import { IUserPhoto } from "@interfaces";
 import type { RefineThemedLayoutV2HeaderProps } from "@refinedev/antd";
+import { useOne } from "@refinedev/core";
 import {
   Avatar,
   Layout as AntdLayout,
@@ -25,8 +27,12 @@ type IUser = {
 export const HeaderContent: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   sticky = true,
 }) => {
-  const { data, status } = useSession();
+  const { data: session, status } = useSession();
   const { token } = useToken();
+
+  const { data: photo, isLoading: isLoadingPhoto } = useOne<IUserPhoto>({
+
+  })
 
   const headerStyles: React.CSSProperties = {
     backgroundColor: token.colorBgElevated,
@@ -46,17 +52,17 @@ export const HeaderContent: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   return (
     <AntdLayout.Header style={headerStyles}>
       <Space>
-        {(data?.user?.name || data?.user?.image) && (
+        {(session?.user?.name) && (
           <Space style={{ marginLeft: "8px" }} size="middle">
-            {data?.user?.name && data?.user?.email &&
+            {session?.user?.name && session?.user?.email &&
               <>
                 <Text strong>
-                  {data.user.name}
+                  {session.user.name}
                 </Text>
               </>
             }
-            {data?.user?.image &&
-              <Avatar src={data?.user?.image} alt={"Avatar"} />
+            {!isLoadingPhoto && photo &&
+              <Avatar src={photo?.data.avatar} alt={"Avatar"} />
             }
           </Space>
         )}

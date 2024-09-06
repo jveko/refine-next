@@ -71,7 +71,8 @@ export const authOptions = {
       return session;
     },
   },
-  debug: process.env.NODE_ENV !== "production" ? true : false,
+  // debug: process.env.NODE_ENV !== "production" ? true : false,
+  debug: true,
 } satisfies NextAuthOptions;
 
 async function refreshAccessToken(token: JWT): Promise<JWT> {
