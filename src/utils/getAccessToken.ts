@@ -1,7 +1,7 @@
 "use server";
-import { TOKEN_KEY } from "@constants";
 import { getToken } from "next-auth/jwt";
 import { cookies, headers } from "next/headers";
+import { NextApiRequest } from "next";
 
 export const getAccessToken = async () => {
   var token = await getToken({
@@ -12,7 +12,7 @@ export const getAccessToken = async () => {
           .getAll()
           .map((c) => [c.name, c.value])
       ),
-    },
+    } as NextApiRequest,
   });
   if (token) {
     return token.accessToken;

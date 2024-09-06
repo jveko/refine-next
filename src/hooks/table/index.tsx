@@ -40,8 +40,6 @@ export type useTableReturnType<
   tableProps: TableProps<TData>;
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 /**
  * By using table, you are able to get properties that are compatible with
  * Ant Design {@link https://ant.design/components/table/ `<Table>`} component.
@@ -134,9 +132,7 @@ export const useTable = <
   const shouldSyncWithLocation = syncWithLocation ?? defaultSyncWithLocation;
   const breakpoint = Grid.useBreakpoint();
   const [form] = Form.useForm<TSearchVariables>();
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const formSF = useFormSF<never, TSearchVariables>({
+  const formSF = useFormSF({
     form: form,
   });
   const liveMode = useLiveMode(liveModeFromProp);
@@ -177,7 +173,7 @@ export const useTable = <
       // set values to form
       formSF.form.setFieldsValue(filterFilterMap as any);
     }
-  }, [shouldSyncWithLocation]);
+  }, [filters, formSF.form, shouldSyncWithLocation]);
 
   const onChange = (
     paginationState: TablePaginationConfig,
@@ -281,6 +277,7 @@ export const useTable = <
       pagination: antdPagination(),
       scroll: { x: true },
     },
+    tableQuery: tableQueryResult,
     tableQueryResult,
     sorters,
     sorter,

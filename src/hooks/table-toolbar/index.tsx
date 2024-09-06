@@ -1,6 +1,6 @@
 import { CrudFilter, CrudSort } from "@refinedev/core";
 import { FormProps } from "antd";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 
 type Props<T> = {
   searchFormProps: FormProps<T>;
@@ -14,26 +14,8 @@ export const useTableToolbar = <T extends object>(props: Props<T>) => {
   const [activeFilter, setActiveFilter] = useState<number>(0);
   const [activeSorter, setActiveSorter] = useState<number>(0);
   const refSearchButton = useRef<HTMLButtonElement>(null);
-  const search = () => {
-    searchFormProps.form?.submit();
-    refSearchButton.current?.focus();
-    setResetFilter();
-  };
-  useEffect(() => {
-    setResetFilter();
-  }, [filters]);
-  +
-    useEffect(() => {
-      setResetSorter();
-    }, [sorters]);
-  const resetFilter = () => {
-    searchFormProps.form?.resetFields();
-    searchFormProps.form?.submit();
-  };
-  const resetSorter = () => {
-    setSorters([]);
-  };
-  const getActiveFilter = () => {
+
+  const getActiveFilter = useCallback(() => {
     if (!searchFormProps.form?.getFieldsValue()) return;
     const values: any = searchFormProps.form?.getFieldsValue();
     let count = 0;
@@ -51,19 +33,39 @@ export const useTableToolbar = <T extends object>(props: Props<T>) => {
       }
     }
     return count;
-  };
-  const getActiveSorter = () => {
-    return sorters.length;
-  };
-  const setResetFilter = () => {
+  }, [searchFormProps.form]);
+
+  const setResetFilter = useCallback(() => {
     const count = getActiveFilter();
     if (typeof count === "number") {
       setActiveFilter(count);
     }
-  };
-  const setResetSorter = () => {
-    const count = getActiveSorter();
+  }, [getActiveFilter]);
+
+  const setResetSorter = useCallback(() => {
+    const count = sorters.length;
     setActiveSorter(count);
+  }, [sorters.length]);
+
+  const search = () => {
+    searchFormProps.form?.submit();
+    refSearchButton.current?.focus();
+    setResetFilter();
+  };
+
+  useEffect(() => {
+    setResetFilter();
+  }, [filters, setResetFilter]);
+
+  useEffect(() => {
+    setResetSorter();
+  }, [setResetSorter, sorters]);
+  const resetFilter = () => {
+    searchFormProps.form?.resetFields();
+    searchFormProps.form?.submit();
+  };
+  const resetSorter = () => {
+    setSorters([]);
   };
   return {
     searchFormProps,
