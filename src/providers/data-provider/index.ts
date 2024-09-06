@@ -3,7 +3,7 @@ import { AxiosInstance } from "axios";
 import queryString from "query-string";
 import { DataProvider, LogicalFilter } from "@refinedev/core";
 import { generateFilter, generateSort } from "@utils";
-import { axiosInstanceApp } from "@instances";
+import { axiosApp } from "@instances";
 
 type MethodTypes = "get" | "delete" | "head" | "options";
 type MethodTypesWithBody = "post" | "put" | "patch";
@@ -219,4 +219,4 @@ const dataProvider = (
   },
 });
 
-export const dataProviderApp = dataProvider(axiosInstanceApp);
+export const dataProviderApp = dataProvider(axiosApp);

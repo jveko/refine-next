@@ -2,7 +2,7 @@
 import { AxiosInstance, isAxiosError } from "axios";
 import { AccessControlProvider } from "@refinedev/core";
 import { DOMAIN_APP } from "@constants";
-import { axiosInstanceApp } from "@instances";
+import { axiosAuth } from "@instances";
 
 type CheckPermissionResponse = {
   isAllowed: boolean;
@@ -58,5 +58,4 @@ const accessControlProviderFactory = (
   },
 });
 
-export const accessControlProvider =
-  accessControlProviderFactory(axiosInstanceApp);
+export const accessControlProvider = accessControlProviderFactory(axiosAuth);
