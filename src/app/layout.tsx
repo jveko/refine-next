@@ -1,17 +1,15 @@
-import { Metadata } from "next";
-import { cookies } from "next/headers";
+import type { Metadata } from "next";
 import React, { Suspense } from "react";
-import { Refine, GitHubBanner } from "@refinedev/core";
-import { DevtoolsProvider } from "@providers/devtools";
-import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
-import { useNotificationProvider } from "@refinedev/antd";
-import routerProvider from "@refinedev/nextjs-router";
-
-import { dataProvider } from "@providers/data-provider";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import "@refinedev/antd/dist/reset.css";
+import { cookies } from "next/headers";
 import { ColorModeContextProvider } from "@contexts/color-mode";
-import { authProvider } from "@providers/auth-provider";
+import { Refine } from "@refinedev/core";
+import routerProvider from "@refinedev/nextjs-router";
+import { dataProviderApp, authProvider, accessControlProvider } from "@providers";
+import { useNotificationProvider } from "@refinedev/antd";
+import { resources } from "@resources";
+import { Provider } from "jotai";
+import { appStore } from "@stores";
 
 export const metadata: Metadata = {
   title: "Refine",
@@ -28,57 +26,31 @@ export default function RootLayout({
 }>) {
   const cookieStore = cookies();
   const theme = cookieStore.get("theme");
-  const defaultMode = theme?.value === "dark" ? "dark" : "light";
 
   return (
     <html lang="en">
       <body>
         <Suspense>
-          <RefineKbarProvider>
-            <AntdRegistry>
-              <ColorModeContextProvider defaultMode={defaultMode}>
-                <DevtoolsProvider>
-                  <Refine
-                    routerProvider={routerProvider}
-                    dataProvider={dataProvider}
-                    notificationProvider={useNotificationProvider}
-                    authProvider={authProvider}
-                    resources={[
-                      {
-                        name: "blog_posts",
-                        list: "/blog-posts",
-                        create: "/blog-posts/create",
-                        edit: "/blog-posts/edit/:id",
-                        show: "/blog-posts/show/:id",
-                        meta: {
-                          canDelete: true,
-                        },
-                      },
-                      {
-                        name: "categories",
-                        list: "/categories",
-                        create: "/categories/create",
-                        edit: "/categories/edit/:id",
-                        show: "/categories/show/:id",
-                        meta: {
-                          canDelete: true,
-                        },
-                      },
-                    ]}
-                    options={{
-                      syncWithLocation: true,
-                      warnWhenUnsavedChanges: true,
-                      useNewQueryKeys: true,
-                      projectId: "6w75O0-68pSLb-vUzTJl",
-                    }}
-                  >
-                    {children}
-                    <RefineKbar />
-                  </Refine>
-                </DevtoolsProvider>
-              </ColorModeContextProvider>
-            </AntdRegistry>
-          </RefineKbarProvider>
+          <AntdRegistry>
+            <ColorModeContextProvider defaultMode={theme?.value}>
+              <Refine
+                routerProvider={routerProvider}
+                dataProvider={dataProviderApp}
+                notificationProvider={useNotificationProvider}
+                accessControlProvider={accessControlProvider}
+                authProvider={authProvider}
+                resources={resources}
+                options={{
+                  syncWithLocation: true,
+                  warnWhenUnsavedChanges: true,
+                  useNewQueryKeys: true,
+                  projectId: "JapdgP-Ptd9DO-0zi81P",
+                }}
+              >
+                {children}
+              </Refine>
+            </ColorModeContextProvider>
+          </AntdRegistry>
         </Suspense>
       </body>
     </html>
