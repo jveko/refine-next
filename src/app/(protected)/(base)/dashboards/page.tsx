@@ -7,7 +7,6 @@ export default function DashboardsList() {
   const { data } = useList({
     resource: "class-business/option",
   })
-  // console.log(data)
   return (
     <RefineList title={"Dashboardssss"}>
     </RefineList>

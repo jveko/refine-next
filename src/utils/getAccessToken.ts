@@ -1,19 +1,8 @@
 "use server";
-import { getToken } from "next-auth/jwt";
-import { cookies, headers } from "next/headers";
-import { NextApiRequest } from "next";
+import { auth } from "@auth";
 
 export const getAccessToken = async () => {
-  var token = await getToken({
-    req: {
-      headers: Object.fromEntries(headers()),
-      cookies: Object.fromEntries(
-        cookies()
-          .getAll()
-          .map((c) => [c.name, c.value])
-      ),
-    } as NextApiRequest,
-  });
+  var token = await auth();
   if (token) {
     return token.accessToken;
   }

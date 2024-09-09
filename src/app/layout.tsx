@@ -8,8 +8,6 @@ import routerProvider from "@refinedev/nextjs-router";
 import { dataProviderApp, authProvider, accessControlProvider } from "@providers";
 import { useNotificationProvider } from "@refinedev/antd";
 import { resources } from "@resources";
-import { Provider } from "jotai";
-import { appStore } from "@stores";
 
 export const metadata: Metadata = {
   title: "Refine",
@@ -25,31 +23,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = cookies();
-  const theme = cookieStore.get("theme");
 
   return (
     <html lang="en">
       <body>
         <Suspense>
           <AntdRegistry>
-            <ColorModeContextProvider defaultMode={theme?.value}>
-              <Refine
-                routerProvider={routerProvider}
-                dataProvider={dataProviderApp}
-                notificationProvider={useNotificationProvider}
-                accessControlProvider={accessControlProvider}
-                authProvider={authProvider}
-                resources={resources}
-                options={{
-                  syncWithLocation: true,
-                  warnWhenUnsavedChanges: true,
-                  useNewQueryKeys: true,
-                  projectId: "JapdgP-Ptd9DO-0zi81P",
-                }}
-              >
-                {children}
-              </Refine>
-            </ColorModeContextProvider>
+            <Refine
+              routerProvider={routerProvider}
+              dataProvider={dataProviderApp}
+              notificationProvider={useNotificationProvider}
+              accessControlProvider={accessControlProvider}
+              authProvider={authProvider}
+              resources={resources}
+              options={{
+                syncWithLocation: true,
+                warnWhenUnsavedChanges: true,
+                useNewQueryKeys: true,
+                projectId: "JapdgP-Ptd9DO-0zi81P",
+              }}
+            >
+              {children}
+            </Refine>
           </AntdRegistry>
         </Suspense>
       </body>

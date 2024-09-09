@@ -28,7 +28,6 @@ export const useTableToolbar = <T extends object>(props: Props<T>) => {
           values[key].length === 0
         )
       ) {
-        console.log("active", key);
         count++;
       }
     }

@@ -5,7 +5,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 export const authProvider: AuthProvider = {
   login: async () => {
-    await signIn("azure-ad", {
+    await signIn("microsoft-entra-id", {
       // callbackUrl: to ? to.toString() : "/",
       redirect: true,
     });

@@ -7,7 +7,6 @@ export const axiosAuth = axios.create({
 
 axiosAuth.interceptors.request.use(async (config) => {
   const token = await getAccessToken();
-  console.log(token);
   if (config.headers && token) {
     config.headers["Authorization"] = `Bearer ${token}`;
   }

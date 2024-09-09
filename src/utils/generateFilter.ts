@@ -20,7 +20,6 @@ export const generateFilter = (filters?: CrudFilters) => {
         }
 
         const mappedOperator = mapOperator(operator);
-        console.log(value, typeof value);
         if (
           Array.isArray(value) &&
           value.every((v: string) => v === "true" || v === "false")

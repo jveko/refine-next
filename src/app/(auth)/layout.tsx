@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import React from "react";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@auth";
+import { auth } from "@auth";
 
 export default async function AuthLayout({
   children,
@@ -16,7 +15,7 @@ export default async function AuthLayout({
 }
 
 async function getData() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   return {
     session,

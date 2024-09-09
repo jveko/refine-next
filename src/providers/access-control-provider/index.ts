@@ -13,7 +13,6 @@ const accessControlProviderFactory = (
 ): AccessControlProvider => ({
   can: async ({ resource, action, params }) => {
     try {
-      console.log(resource, action, params);
       const resp = await httpClient.get<CheckPermissionResponse>(
         "permissions/check",
         {

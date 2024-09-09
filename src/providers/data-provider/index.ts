@@ -15,7 +15,6 @@ const dataProvider = (
   "createMany" | "updateMany" | "deleteMany"
 > => ({
   getList: async ({ resource, pagination, filters, sorters, meta }) => {
-    console.log(httpClient.getUri());
     const url = `${resource}`;
     const { current = 1, pageSize = 10, mode = "server" } = pagination ?? {};
     const {

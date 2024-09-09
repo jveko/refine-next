@@ -1,7 +1,7 @@
 import "next-auth/jwt";
-import AzureAD from "next-auth/providers/azure-ad";
-import { NextAuthOptions, TokenSet } from "next-auth";
+import MicrosoftEntraID from "next-auth/providers/microsoft-entra-id";
 import { JWT } from "next-auth/jwt";
+import NextAuth from "next-auth";
 
 declare module "next-auth" {
   interface Session {
@@ -36,9 +36,9 @@ if (
 
 const scope = `openid profile email offline_access ${AUTH_AZURE_AD_CUSTOM_SCOPE}`;
 
-export const authOptions = {
+export const { auth, handlers, signIn, signOut } = NextAuth({
   providers: [
-    AzureAD({
+    MicrosoftEntraID({
       clientId: AUTH_AZURE_AD_CLIENT_ID,
       clientSecret: AUTH_AZURE_AD_CLIENT_SECRET,
       tenantId: AUTH_AZURE_AD_TENANT_ID,
@@ -73,7 +73,7 @@ export const authOptions = {
     },
   },
   debug: process.env.NODE_ENV !== "production" ? true : false,
-} satisfies NextAuthOptions;
+});
 
 async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
